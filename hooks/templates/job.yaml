@@ -9,6 +9,7 @@ spec:
   {{- if gt (int .Values.job.ttlSecondsAfterFinished) -1 }}
   ttlSecondsAfterFinished: {{ .Values.job.ttlSecondsAfterFinished }}
   {{- end }}
+  backoffLimit: {{ .Values.job.backoffLimit }}
   template:
     spec:
       containers:
