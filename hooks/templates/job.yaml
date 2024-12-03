@@ -6,11 +6,21 @@ metadata:
     "helm.sh/hook": pre-install
     "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
 spec:
-  ttlSecondsAfterFinished: 0
+  {{- if gt (int .Values.job.ttlSecondsAfterFinished) -1 }}
+  ttlSecondsAfterFinished: {{ .Values.job.ttlSecondsAfterFinished }}
+  {{- end }}
   template:
     spec:
       containers:
         - name: hello-world-container
           image: busybox
-          command: ["sh", "-c", "echo 'Hello, World!'; sleep 5"]
+          command:
+            - sh
+            - -c
+            - |
+              echo "Hello, World!"
+              echo "Sleeping for {{ .Values.job.sleepSeconds }} seconds..."
+              sleep {{ .Values.job.sleepSeconds }}
+              echo "Exiting with code {{ .Values.job.exitCode }}"
+              exit {{ .Values.job.exitCode }}
       restartPolicy: Never
