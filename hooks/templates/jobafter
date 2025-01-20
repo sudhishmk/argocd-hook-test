@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hello-world-job-post
+  annotations:
+    "helm.sh/hook": post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+spec:
+  {{- if gt (int .Values.job.ttlSecondsAfterFinished) -1 }}
+  ttlSecondsAfterFinished: {{ .Values.job.ttlSecondsAfterFinished }}
+  {{- end }}
+  backoffLimit: {{ .Values.job.backoffLimit }}
+  template:
+    spec:
+      containers:
+        - name: hello-world-container
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              echo "Hello, World!"
+              echo "Sleeping for {{ .Values.job.sleepSeconds }} seconds..."
+              sleep {{ .Values.job.sleepSeconds }}
+              echo "Exiting with code {{ .Values.job.exitCode }}"
+              exit {{ .Values.job.exitCode }}
+      restartPolicy: Never
