@@ -1,5 +1,5 @@
 job:
   backoffLimit: 1
   ttlSecondsAfterFinished: 0
-  sleepSeconds: 5
+  sleepSeconds: 15
   exitCode: 0
