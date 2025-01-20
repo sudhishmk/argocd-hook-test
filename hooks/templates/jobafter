@@ -6,9 +6,6 @@ metadata:
     "helm.sh/hook": post-upgrade
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
 spec:
-  {{- if gt (int .Values.job.ttlSecondsAfterFinished) -1 }}
-  ttlSecondsAfterFinished: {{ .Values.job.ttlSecondsAfterFinished }}
-  {{- end }}
   backoffLimit: {{ .Values.job.backoffLimit }}
   template:
     spec:
