@@ -4,7 +4,7 @@ metadata:
   name: hello-world-job
   annotations:
     "helm.sh/hook": pre-install
-    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
 spec:
   {{- if gt (int .Values.job.ttlSecondsAfterFinished) -1 }}
   ttlSecondsAfterFinished: {{ .Values.job.ttlSecondsAfterFinished }}
